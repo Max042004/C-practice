@@ -90,5 +90,7 @@ int main()
 		str_ptr = str_ptr + 1;
 	}
 
+	free(stack_bottom);
+
 	return 0;
 }
