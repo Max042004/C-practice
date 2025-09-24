@@ -17,13 +17,14 @@ void print_stack(char *stack_bottom)
 }
 
 // pop one element from stack
-bool pop(char *str_ptr, char **stack_pointer, char *stack_bottom)
+bool pop(char *str_ptr, char **stack_pointer, char *stack_bottom, int *top_count, int *pop_count)
 {
-	printf("pop: %c\n", *str_ptr);
+	printf("top: %c\n", *str_ptr);
 	if(*stack_pointer - stack_bottom <= 0){
 		printf("error, stack is empty\n");
 		return false;
 	}
+	*top_count = *top_count + 1;
 	switch(*str_ptr){
 		case 41: 
 			if(*(*stack_pointer-1) != 40){
@@ -46,6 +47,8 @@ bool pop(char *str_ptr, char **stack_pointer, char *stack_bottom)
 			}
 			break;
 	}
+	printf("pop: %c\n", *str_ptr);
+	*pop_count = *pop_count + 1;
 	*stack_pointer = *stack_pointer - 1;
 	**stack_pointer = 0;
 	print_stack(stack_bottom);
@@ -55,7 +58,7 @@ bool pop(char *str_ptr, char **stack_pointer, char *stack_bottom)
 }
 
 // push one element to stack from a array
-bool push(char *str_ptr, char **stack_pointer, char *stack_bottom)
+bool push(char *str_ptr, char **stack_pointer, char *stack_bottom, int *push_count)
 {
 	if(*stack_pointer - stack_bottom >= 100){
 		printf("error, stack is full\n");
@@ -66,6 +69,7 @@ bool push(char *str_ptr, char **stack_pointer, char *stack_bottom)
 	*stack_pointer = *stack_pointer + 1;
 	print_stack(stack_bottom);
 	printf("\n\n");
+	*push_count = *push_count + 1;
 	return true;
 }
 
@@ -79,17 +83,19 @@ int main()
 	char str[100];
 	scanf("%s", str);
 	char *str_ptr = &str[0];
+	int push_count = 0, pop_count = 0, top_count = 0;
 	for(;;){
 		if(*str_ptr == 0) break;
 		if(*str_ptr == 123 || *str_ptr == 91 || *str_ptr == 40){
-			if(!push(str_ptr, &stack_pointer, stack_bottom)) break;
+			if(!push(str_ptr, &stack_pointer, stack_bottom, &push_count)) break;
 		}
 		if(*str_ptr == 125 || *str_ptr == 93 || *str_ptr == 41){
-			if(!pop(str_ptr, &stack_pointer, stack_bottom)) break;
+			if(!pop(str_ptr, &stack_pointer, stack_bottom, &top_count, &pop_count)) break;
 		}
 		str_ptr = str_ptr + 1;
 	}
 
+	printf("times:\npush: %d, top: %d, pop: %d\n", push_count, top_count, pop_count);
 	free(stack_bottom);
 
 	return 0;
