@@ -1,8 +1,10 @@
-*.out      # Linux/Unix 可執行文件（無副檔名）
-a.out      # C/C++ 編譯器預設輸出的可執行文件
-*.o
-*.log
-*.obj
-*.swp
-*.txt
-*.exe
+# 忽略全部
+*
+# 但保留資料夾與常見原始碼、配置檔
+!*/
+!*.c
+!*.h
+!*.py
+!*.md
+!Makefile
+!.gitignore
